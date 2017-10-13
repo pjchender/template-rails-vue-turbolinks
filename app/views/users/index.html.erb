@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to 'Show', user %></td>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<% @hello_message = {num: 1, str: '2', arr: [1, 2, 3], obj: {name: 'foo', age: 12}} %>
+
+<!-- Import Vue Component -->
+<div data-vue-component-outlet="v-hello-vue">
+  <hello-vue
+  :obj="<%= @hello_message[:obj].to_json %>"
+  :arr="<%= @hello_message[:arr] %>"
+  :str="<%= @hello_message[:str] %>"
+  :num="<%= @hello_message[:num] %>"
+  ></hello-vue>
+</div>
+<!-- End of Import Vue Component -->
+
+<!-- Use Vue Component by inline-template -->
+<div data-vue-component-outlet="v-hello-vue-inline">
+  <hello-vue-inline
+  :obj="<%= @hello_message[:obj].to_json %>"
+  :arr="<%= @hello_message[:arr] %>"
+  :str="<%= @hello_message[:str] %>"
+  :num="<%= @hello_message[:num] %>"
+  inline-template
+  >
+    <div>
+      <h4>{{ message }}</h4>
+      <ul>
+        <li>Object: {{ obj }} </li>
+        <li>Number: {{ num }} </li>
+        <li>Array: {{ arr }} </li>
+        <li>String: {{ str }} </li>
+      </ul>
+    </div>
+  </hello-vue-inline>
+</div>
+<!-- End of Vue Component by inline-template -->
+
+<!-- Use Vue Helper to use Vue Component -->
+<%= vue_outlet do %>
+  <hello-vue
+  :obj="<%= @hello_message[:obj].to_json %>"
+  :arr="<%= @hello_message[:arr] %>"
+  :str="<%= @hello_message[:str] %>"
+  :num="<%= @hello_message[:num] %>"
+  >
+<% end %>
+<!-- End of Use Vue Helper to use Vue Component -->
+
+<%= link_to 'New User', new_user_path %>
